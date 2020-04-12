@@ -7,7 +7,7 @@ RoutePlanner::RoutePlanner(RouteModel &model, float start_x, float start_y, floa
     start_y *= 0.01;
     end_x *= 0.01;
     end_y *= 0.01;
-
+//getting this right needed help : https://www.codingunit.com/cplusplus-tutorial-pointers-reference-and-dereference-operators 
 start_node= &m_Model.FindClosestNode(start_x,start_y);
 end_node= &m_Model.FindClosestNode(end_x,end_y);
 //std::cout<<"Here";
@@ -93,8 +93,10 @@ std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node 
     path_found.emplace_back(*current_node);
    current_node=current_node->parent;
  }
+  
+  //the last node is left out and had to be added manually at the end
    path_found.emplace_back(*current_node);
-      // TODO: Implement your solution here.
+      //Found the reverse function here: https://stackoverflow.com/questions/8877448/how-do-i-reverse-a-c-vector
     std::reverse(path_found.begin(),path_found.end());
     distance *= m_Model.MetricScale(); // Multiply the distance by the scale of the map to get meters.
     return path_found;
@@ -117,14 +119,17 @@ void RoutePlanner::AStarSearch() {
     start_node->visited=true;
   //std::cout<<start_node;
     while (current_node!=end_node)
-    { //step 1. update current node
+    { //step 1. add neighbors/generate them so you know the potential next places to go to
    
         AddNeighbors(current_node);
+      //update  the current node from the selcted neighbour which had the minimum G+H vlue picked this up from the lesson on Astar
         current_node=NextNode();
 		
         /* code */
     }
-    
+    //finally now that you have a linked set of points , each 
+  //chosen from other alternatives, each containing its predecessor 
+  //node, you can generate the completed path now .
     m_Model.path=ConstructFinalPath(current_node);
     
 
