@@ -27,6 +27,30 @@ static std::optional<std::vector<std::byte>> ReadFile(const std::string &path)
     return std::move(contents);
 }
 
+float input_handler( std::string inputtext )
+{ 
+    float x;
+    while(1)
+    {
+        std::cout << inputtext;
+        std::cin >>x ;
+        if (!std::isnan(x))
+        {
+            if (!std::isalpha(x))
+            {
+               // if (abs(x - int(x)) > 0)
+                {
+                    std::cout << "float value found";
+                    return(x);
+                    break;
+                }
+                 
+            }
+
+        }
+    }
+
+}
 int main(int argc, const char **argv)
 {    
     std::string osm_data_file = "";
@@ -55,12 +79,17 @@ int main(int argc, const char **argv)
     // TODO 1: Declare floats `start_x`, `start_y`, `end_x`, and `end_y` and get
     // user input for these values using std::cin. Pass the user input to the
     // RoutePlanner object below in place of 10, 10, 90, 90.
-
+float start_x, start_y, end_x, end_y;
+    start_x = input_handler("start_x");
+    start_y = input_handler("start_y");
+    end_x = input_handler("end_x");
+    end_y = input_handler("end_y");
     // Build Model.
+  
     RouteModel model{osm_data};
-
+	std::cout<<start_x;
     // Create RoutePlanner object and perform A* search.
-    RoutePlanner route_planner{model, 10, 10, 90, 90};
+    RoutePlanner route_planner{model,start_x, start_y, end_x, end_y};
     route_planner.AStarSearch();
 
     std::cout << "Distance: " << route_planner.GetDistance() << " meters. \n";
